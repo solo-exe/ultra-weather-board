@@ -1,8 +1,7 @@
 import Card from "./Card"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { getWeather } from "../../api"
-
-// type Props = {}
+import WeatherIcon from "../WeatherIcon"
 
 const DailyForecast = () => {
     const { data } = useSuspenseQuery({
@@ -15,8 +14,6 @@ const DailyForecast = () => {
         refetchOnReconnect: false,
     })
 
-    console.log(JSON.stringify(data).slice(0, 19), "DATA FETCHED ATA DAILY FORECAST")
-
     return (
         <Card title="Daily Forecast (8 Days)" childrenClassname="flex flex-col gap-4">
             {data.daily.map((day) => (
@@ -28,10 +25,8 @@ const DailyForecast = () => {
                             month: "short",
                         })}
                     </p>
-                    <img
-                        className="size-8"
+                    <WeatherIcon
                         src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
-                        alt="Weather Icon"
                     />
                     <p>{Math.round(day.temp.day) + "°C"}</p>
                     <p className="text-gray-500/75">{Math.round(day.temp.min) + "°C"}</p>
