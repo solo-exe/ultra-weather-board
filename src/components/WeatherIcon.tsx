@@ -1,9 +1,18 @@
+import clsx from "clsx"
+
 type Props = {
-    src: string
+    icon: string
+    className?: string
 }
 
-const WeatherIcon = ({ src }: Props) => {
-    return <img className="size-8" src={src} alt="Weather Icon" />
+const WeatherIcon = ({ icon, className }: Props) => {
+    return (
+        <img
+            className={clsx("size-8", className)}
+            src={`https://openweathermap.org/img/wn/${icon}.png`}
+            alt="Weather Icon"
+        />
+    )
 }
 
 export default WeatherIcon

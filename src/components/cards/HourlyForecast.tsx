@@ -25,9 +25,7 @@ const HourlyForcast = () => {
                             hour12: true,
                         })}
                     </p>
-                    <WeatherIcon
-                        src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}.png`}
-                    />
+                    <WeatherIcon icon={hour.weather[0].icon} />
                     <p>{Math.round(hour.temp)}°C</p>
                 </div>
             ))}

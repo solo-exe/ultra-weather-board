@@ -25,9 +25,7 @@ const DailyForecast = () => {
                             month: "short",
                         })}
                     </p>
-                    <WeatherIcon
-                        src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
-                    />
+                    <WeatherIcon icon={day.weather[0].icon} />
                     <p>{Math.round(day.temp.day) + "°C"}</p>
                     <p className="text-gray-500/75">{Math.round(day.temp.min) + "°C"}</p>
                     <p className="text-gray-500/75">{Math.round(day.temp.max) + "°C"}</p>

@@ -1,25 +1,27 @@
-import { useQuery } from "@tanstack/react-query"
-import { getWeather } from "./api"
-import Card from "./components/cards/Card"
+// import { useQuery } from "@tanstack/react-query"
+// import { getWeather } from "./api"
 import DailyForecast from "./components/cards/DailyForecast"
 import HourlyForecast from "./components/cards/HourlyForecast"
+import CurrentWeather from "./components/cards/CurrentWeather"
+import AdditionalInfo from "./components/cards/AdditionalInfo"
 
 function App() {
-    const { data } = useQuery({
-        queryKey: ["weather"],
-        queryFn: async () => await getWeather({ lat: 6.547329, lon: 3.393668 }),
+    // const { data } = useQuery({
+    //     queryKey: ["weather"],
+    //     queryFn: async () => await getWeather({ lat: 6.547329, lon: 3.393668 }),
 
-        refetchOnWindowFocus: false,
-        retry: false,
-        retryOnMount: false,
-        refetchOnReconnect: false,
-    })
+    //     refetchOnWindowFocus: false,
+    //     retry: false,
+    //     retryOnMount: false,
+    //     refetchOnReconnect: false,
+    // })
 
     return (
         <div className="flex flex-col gap-8">
-            <Card title="Current Weather">{JSON.stringify(data?.current ?? "").slice(0, 100)}</Card>
+            <CurrentWeather />
             <HourlyForecast />
             <DailyForecast />
+            <AdditionalInfo />
         </div>
     )
 }
