@@ -3,13 +3,46 @@ import Card from "./Card"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { getWeather } from "../../api"
 
+import SunriseSVG from "../../assets/sunset.svg?react"
+import SunsetSVG from "../../assets/sunset.svg?react"
+import CloudSVG from "../../assets/cloud.svg?react"
+import PressureSVG from "../../assets/pressure.svg?react"
+import UvSVG from "../../assets/uv.svg?react"
+import WindSVG from "../../assets/wind.svg?react"
+import UpArrowSVG from "../../assets/uparrow.svg?react"
+import type { Coords } from "../../types"
+
 const rows = [
-    { label: "Cloudiness (%)", value: "clouds" },
-    { label: "UV index", value: "uvi" },
-    { label: "Wind Direction", value: "wind_deg" },
-    { label: "Pressure (Pa)", value: "pressure" },
-    { label: "Sunrise", value: "sunrise" },
-    { label: "Sunset", value: "sunset" },
+    {
+        label: "Cloudiness (%)",
+        value: "clouds",
+        Icon: CloudSVG,
+    },
+    {
+        label: "UV index",
+        value: "uvi",
+        Icon: UvSVG,
+    },
+    {
+        label: "Wind Direction",
+        value: "wind_deg",
+        Icon: WindSVG,
+    },
+    {
+        label: "Pressure (Pa)",
+        value: "pressure",
+        Icon: PressureSVG,
+    },
+    {
+        label: "Sunrise",
+        value: "sunrise",
+        Icon: SunriseSVG,
+    },
+    {
+        label: "Sunset",
+        value: "sunset",
+        Icon: SunsetSVG,
+    },
 ] as const
 
 const FormatComponent: React.FC<{ value: string; number: number }> = ({ value, number }) => {
@@ -20,13 +53,18 @@ const FormatComponent: React.FC<{ value: string; number: number }> = ({ value, n
             hour12: true,
         })
     }
+    if (value === "wind_deg")
+        return (
+            <UpArrowSVG style={{ transform: `rotate(${number}deg)` }} className="size-6 invert" />
+        )
     return number
 }
 
-const AdditionalInfo = () => {
+const AdditionalInfo = ({ coords }: { coords: Coords }) => {
+    const { lat, lon } = coords
     const { data } = useSuspenseQuery({
-        queryKey: ["weather"],
-        queryFn: async () => await getWeather({ lat: 6.547329, lon: 3.393668 }),
+        queryKey: ["weather", coords],
+        queryFn: async () => await getWeather({ lat, lon }),
 
         refetchOnWindowFocus: false,
         retry: false,
@@ -36,9 +74,12 @@ const AdditionalInfo = () => {
 
     return (
         <Card title="Additional Weather Info" childrenClassname="flex flex-col gap-8">
-            {rows.map(({ label, value }) => (
+            {rows.map(({ label, value, Icon }) => (
                 <div key={value} className="flex justify-between">
-                    <span className="text-gray-500">{label}</span>
+                    <div className="flex gap-4">
+                        <span className="text-gray-500">{label}</span>
+                        <Icon className="size-8 invert" />
+                    </div>
                     <span>
                         <FormatComponent value={value} number={data.current[value]} />
                     </span>
