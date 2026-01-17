@@ -1,5 +1,5 @@
 import { createApiResponseSchema } from "./schemas/apiGatewayResSchema"
-import { geocodeSchema } from "./schemas/geocodeSchema"
+import { geocodeSchema, type GeoCodeData } from "./schemas/geocodeSchema"
 import { weatherSchema } from "./schemas/weatherSchema"
 
 const baseUrl = "http://localhost:7002/api/v1/openweather"
@@ -19,7 +19,6 @@ export const getWeather = async (data: { lat: number; lon: number; appId?: strin
         const weatherData = await res.json()
 
         const parsedResponse = createApiResponseSchema(weatherSchema).parse(weatherData)
-
         return parsedResponse.data
     } catch (error) {
         console.error("WEATHER FETCH ERROR:", error)
@@ -27,11 +26,14 @@ export const getWeather = async (data: { lat: number; lon: number; appId?: strin
     }
 }
 
-export const getGeocode = async (data: { placeName: string; appId?: string }) => {
-    const { placeName, appId } = data
+export const getGeocode = async (data: {
+    location: string
+    appId?: string
+}): Promise<GeoCodeData> => {
+    const { location, appId } = data
 
     const params = new URLSearchParams({
-        q: placeName.toString(),
+        location: location.toString(),
         limit: "1",
         ...(appId ? { appId: appId ?? "" } : {}),
     })
@@ -42,7 +44,6 @@ export const getGeocode = async (data: { placeName: string; appId?: string }) =>
         const geocodeData = await res.json()
 
         const parsedResponse = createApiResponseSchema(geocodeSchema).parse(geocodeData)
-
         return parsedResponse.data
     } catch (error) {
         console.error("GEOCODE FETCH ERROR:", error)

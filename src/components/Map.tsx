@@ -10,21 +10,32 @@ type Props = {
 const Map = ({ coords, onMapClick }: Props) => {
     const { lat, lon } = coords
     return (
-        <MapContainer center={[lat, lon]} zoom={5} style={{ width: "100vw", height: "500px" }}>
+        <MapContainer
+            // key={`${lat},${lon}`} // added to force rerendeer when coordinates change
+            center={[lat, lon]}
+            zoom={5}
+            style={{ width: "100vw", height: "500px" }}
+        >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <MapClick onMapClick={onMapClick} />
+            <MapClick onMapClick={onMapClick} coords={coords} />
             <Marker position={[lat, lon]} />
         </MapContainer>
     )
 }
 
-const MapClick = ({ onMapClick }: { onMapClick: (lat: number, lon: number) => void }): null => {
+const MapClick = ({
+    onMapClick,
+    coords,
+}: {
+    onMapClick: (lat: number, lon: number) => void
+    coords: Coords
+}): null => {
     const map = useMap()
+    map.panTo([coords.lat, coords.lon])
     map.on("click", (e) => {
-        map.panTo(e.latlng)
         const { lat, lng } = e.latlng
         onMapClick(lat, lng)
     })

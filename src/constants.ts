@@ -45,40 +45,4 @@ export const locations: LocationDropdownItem[] = [
         place: "Moscow",
         coords: { lat: 55.7558, lon: 37.6173 },
     },
-    {
-        place: "Dubai",
-        coords: { lat: 25.2048, lon: 55.2708 },
-    },
-    {
-        place: "Singapore",
-        coords: { lat: 1.3521, lon: 103.8198 },
-    },
-    {
-        place: "Los Angeles",
-        coords: { lat: 34.0522, lon: -118.2437 },
-    },
-    {
-        place: "Cape Town",
-        coords: { lat: -33.9249, lon: 18.4241 },
-    },
-    {
-        place: "Bangkok",
-        coords: { lat: 13.7563, lon: 100.5018 },
-    },
-    {
-        place: "Mexico City",
-        coords: { lat: 19.4326, lon: -99.1332 },
-    },
-    {
-        place: "Seoul",
-        coords: { lat: 37.5665, lon: 126.978 },
-    },
-    {
-        place: "Istanbul",
-        coords: { lat: 41.0082, lon: 28.9784 },
-    },
-    {
-        place: "Toronto",
-        coords: { lat: 43.6532, lon: -79.3832 },
-    },
 ]
