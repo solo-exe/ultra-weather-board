@@ -1,4 +1,4 @@
-import { locations } from "@/constants"
+import { mapTypes } from "@/constants"
 import {
     Select,
     SelectContent,
@@ -11,23 +11,23 @@ import {
 import type { Dispatch, SetStateAction } from "react"
 
 type Props = {
-    location: string
-    setLocation: Dispatch<SetStateAction<string>>
+    mapType: string
+    setMapType: Dispatch<SetStateAction<string>>
 }
 
-const LocationDropdown = ({ location, setLocation }: Props) => {
+const MapTypeDropdown = ({ mapType, setMapType }: Props) => {
     return (
         <div className="flex justify-center">
-            <Select value={location} onValueChange={(value) => setLocation(value)}>
+            <Select value={mapType} onValueChange={(value) => setMapType(value)}>
                 <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Pick a location" />
+                    <SelectValue placeholder="Pick a map type" />
                 </SelectTrigger>
                 <SelectContent className="z-1001">
                     <SelectGroup>
-                        <SelectLabel>Locations</SelectLabel>
-                        {locations.map((location) => (
-                            <SelectItem key={location} value={location}>
-                                {location}
+                        <SelectLabel>Map Types</SelectLabel>
+                        {mapTypes.map((mapType) => (
+                            <SelectItem key={mapType} value={mapType}>
+                                {mapType}
                             </SelectItem>
                         ))}
                     </SelectGroup>
@@ -37,4 +37,4 @@ const LocationDropdown = ({ location, setLocation }: Props) => {
     )
 }
 
-export default LocationDropdown
+export default MapTypeDropdown

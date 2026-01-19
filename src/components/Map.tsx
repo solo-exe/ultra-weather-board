@@ -20,6 +20,10 @@ const Map = ({ coords, onMapClick }: Props) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
+            {/* <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            /> */}
             <MapClick onMapClick={onMapClick} coords={coords} />
             <Marker position={[lat, lon]} />
         </MapContainer>

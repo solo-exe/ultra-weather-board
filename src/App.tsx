@@ -7,13 +7,15 @@ import AdditionalInfo from "./components/cards/AdditionalInfo"
 import Map from "./components/Map"
 import { useState } from "react"
 import type { Coords } from "./types"
-import LocationDropdown from "./components/dropdowns/LocationDropdown"
 import { getGeocode } from "./api"
 import { useQuery } from "@tanstack/react-query"
+import LocationDropdown from "./components/dropdowns/LocationDropdown"
+import MapTypeDropdown from "./components/dropdowns/MapTypeDropdown"
 
 function App() {
     const [coordinates, setCoords] = useState<Coords>({ lat: 10, lon: 25 })
-    const [location, setLocation] = useState("Lagos")
+    const [location, setLocation] = useState("")
+    const [mapType, setMapType] = useState("")
 
     const { data: geocodeData } = useQuery({
         queryKey: ["geocode", location],
@@ -36,7 +38,10 @@ function App() {
 
     return (
         <div className="flex flex-col gap-8">
-            <LocationDropdown location={location} setLocation={setLocation} />
+            <div className="flex justify-center gap-4">
+                <LocationDropdown location={location} setLocation={setLocation} />
+                <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
+            </div>
             <Map coords={coords} onMapClick={(lat, lon) => onMapClick(lat, lon)} />
             <CurrentWeather coords={coords} />
             <HourlyForecast coords={coords} />
