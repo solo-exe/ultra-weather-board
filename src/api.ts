@@ -32,6 +32,8 @@ export const getGeocode = async (data: {
 }): Promise<GeoCodeData> => {
     const { location, appId } = data
 
+    if (!location) throw new Error("No location specified")
+
     const params = new URLSearchParams({
         location: location.toString(),
         limit: "1",

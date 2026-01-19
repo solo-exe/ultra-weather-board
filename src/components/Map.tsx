@@ -5,25 +5,28 @@ import type { Coords } from "../types"
 type Props = {
     coords: Coords
     onMapClick: (lat: number, lon: number) => void
+    mapType: string
 }
 
-const Map = ({ coords, onMapClick }: Props) => {
+const APIKey = "bb9aa5aebdc3f42358f7894b12c5494a"
+
+const Map = ({ coords, onMapClick, mapType }: Props) => {
     const { lat, lon } = coords
     return (
         <MapContainer
             // key={`${lat},${lon}`} // added to force rerendeer when coordinates change
             center={[lat, lon]}
             zoom={5}
-            style={{ width: "100vw", height: "500px" }}
+            style={{ width: "100vw", height: "800px" }}
         >
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            {/* <TileLayer
+            <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            /> */}
+                url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${APIKey}`}
+            />
             <MapClick onMapClick={onMapClick} coords={coords} />
             <Marker position={[lat, lon]} />
         </MapContainer>

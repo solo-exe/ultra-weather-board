@@ -34,7 +34,7 @@ const hourlySchema = z.object({
     dew_point: z.number(),
     uvi: z.number(),
     clouds: z.number(),
-    visibility: z.number(),
+    visibility: z.number().nullable(),
     wind_speed: z.number(),
     wind_deg: z.number(),
     wind_gust: z.number().optional(),

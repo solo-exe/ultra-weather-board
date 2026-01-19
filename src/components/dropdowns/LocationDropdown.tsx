@@ -25,6 +25,7 @@ const LocationDropdown = ({ location, setLocation }: Props) => {
                 <SelectContent className="z-1001">
                     <SelectGroup>
                         <SelectLabel>Locations</SelectLabel>
+                        {location === "custom" && <SelectItem value="custom">Custom</SelectItem>}
                         {locations.map((location) => (
                             <SelectItem key={location} value={location}>
                                 {location}

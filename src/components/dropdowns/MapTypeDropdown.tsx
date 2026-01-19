@@ -1,4 +1,4 @@
-import { mapTypes } from "@/constants"
+import { mapTypeList } from "@/constants"
 import {
     Select,
     SelectContent,
@@ -25,9 +25,9 @@ const MapTypeDropdown = ({ mapType, setMapType }: Props) => {
                 <SelectContent className="z-1001">
                     <SelectGroup>
                         <SelectLabel>Map Types</SelectLabel>
-                        {mapTypes.map((mapType) => (
-                            <SelectItem key={mapType} value={mapType}>
-                                {mapType}
+                        {mapTypeList.map((type) => (
+                            <SelectItem className="capitalize" key={type.key} value={type.key}>
+                                {type.value}
                             </SelectItem>
                         ))}
                     </SelectGroup>

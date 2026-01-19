@@ -12,10 +12,10 @@ export const locations: string[] = [
     "Moscow",
 ]
 
-export const mapTypes: string[] = [
-    "clouds_new",
-    "precipitation_new",
-    "pressure_new",
-    "temp_new",
-    "wind_new",
+export const mapTypeList: { key: string; value: string }[] = [
+    { key: "clouds_new", value: "Clouds" },
+    { key: "precipitation_new", value: "Precipitation" },
+    { key: "pressure_new", value: "Pressure" },
+    { key: "temp_new", value: "Temperature" },
+    { key: "wind_new", value: "Wind" },
 ]
