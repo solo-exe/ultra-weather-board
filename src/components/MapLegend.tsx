@@ -1,5 +1,3 @@
-import React from "react"
-
 type Props = {
     mapType: string
 }
@@ -21,11 +19,17 @@ const MapLegend = ({ mapType }: Props) => {
                     background: `linear-gradient(to right, ${gradientStops})`,
                 }}
             />
+            <div className="flex justify-between text-xs text-foreground">
+                <span>
+                    {data.stops[0].value} {data.unit}
+                </span>
+                <span>
+                    {data.stops[data.stops.length - 1].value} {data.unit}
+                </span>
+            </div>
         </div>
     )
 }
-
-export default MapLegend
 
 const mapTypeData: Record<string, { title: string; unit: string; stops: ColorStop[] }> = {
     precipitation_new: {
@@ -111,3 +115,5 @@ interface ColorStop {
     color: string
     opacity?: number
 }
+
+export default MapLegend
