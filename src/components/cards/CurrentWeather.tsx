@@ -20,10 +20,10 @@ const CurrentWeather = ({ coords }: { coords: Coords }) => {
         <Card title="Current Weather" childrenClassname="flex flex-col items-center gap-6">
             <div className="flex flex-col gap-2 items-center">
                 <h2 className="text-6xl font-semibold text-center">
-                    {Math.round(data.current.temp) + "°C"}
+                    {Math.round(data?.current?.temp || 0) + "°C"}
                 </h2>
-                <WeatherIcon icon={data.current.weather[0].icon} className="size-14" />
-                <h3 className="capitalize text-xl">{data.current.weather[0].description}</h3>
+                <WeatherIcon icon={data?.current?.weather[0].icon || ""} className="size-14" />
+                <h3 className="capitalize text-xl">{data?.current?.weather[0].description}</h3>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -33,23 +33,23 @@ const CurrentWeather = ({ coords }: { coords: Coords }) => {
                         hour: "2-digit",
                         minute: "2-digit",
                         hour12: true,
-                        timeZone: data.timezone,
-                    }).format(data.current.dt * 1000)}
+                        timeZone: data?.timezone,
+                    }).format((data?.current?.dt ?? 0) * 1000)}
                 </h3>
             </div>
 
             <div className="flex justify-between w-full">
                 <div className="flex flex-col gap-2 items-center">
                     <p className="text-gray-500">Feels Like</p>
-                    <p>{Math.round(data.current.feels_like) + "°C"}</p>
+                    <p>{Math.round(data?.current?.feels_like ?? 0) + "°C"}</p>
                 </div>
                 <div className="flex flex-col gap-2 items-center">
                     <p className="text-gray-500">Humidity</p>
-                    <p>{Math.round(data.current.humidity) + "%"}</p>
+                    <p>{Math.round(data?.current?.humidity ?? 0) + "%"}</p>
                 </div>
                 <div className="flex flex-col gap-2 items-center">
                     <p className="text-gray-500">Wind Speed</p>
-                    <p>{Math.round(data.current.wind_speed) + "m/s"}</p>
+                    <p>{Math.round(data?.current?.wind_speed ?? 0) + "m/s"}</p>
                 </div>
             </div>
         </Card>

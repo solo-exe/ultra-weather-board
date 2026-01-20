@@ -18,7 +18,7 @@ const DailyForecast = ({ coords }: { coords: Coords }) => {
 
     return (
         <Card title="Daily Forecast (8 Days)" childrenClassname="flex flex-col gap-4">
-            {data.daily.map((day) => (
+            {data?.daily?.map((day) => (
                 <div key={day.dt} className="flex justify-between">
                     <p className="w-30">
                         {new Date(day.dt * 1000).toLocaleDateString(undefined, {

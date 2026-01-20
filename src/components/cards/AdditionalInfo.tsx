@@ -81,7 +81,7 @@ const AdditionalInfo = ({ coords }: { coords: Coords }) => {
                         <Icon className="size-8 invert" />
                     </div>
                     <span>
-                        <FormatComponent value={value} number={data.current[value]} />
+                        <FormatComponent value={value} number={data?.current?.[value] || 0} />
                     </span>
                 </div>
             ))}

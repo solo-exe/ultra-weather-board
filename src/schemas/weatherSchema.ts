@@ -82,13 +82,13 @@ const dailySchema = z.object({
 })
 
 export const weatherSchema = z.object({
-    lat: z.number(),
-    lon: z.number(),
-    timezone: z.string(),
-    timezone_offset: z.number(),
-    current: currentSchema,
-    hourly: z.array(hourlySchema),
-    daily: z.array(dailySchema),
+    lat: z.number().optional(),
+    lon: z.number().optional(),
+    timezone: z.string().optional(),
+    timezone_offset: z.number().optional(),
+    current: currentSchema.optional(),
+    hourly: z.array(hourlySchema).optional(),
+    daily: z.array(dailySchema).optional(),
 })
 
 export type WeatherData = z.infer<typeof weatherSchema>
