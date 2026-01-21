@@ -11,7 +11,7 @@ const MapLegend = ({ mapType }: Props) => {
         .map((stop) => `${stop.color} ${(stop.value / maxValue) * 100}%`)
         .join(",")
     return (
-        <div className="absolute top-4 right-4 z-1000 w-96 rounded-xl shadow p-4 bg-background/50 text-center border border-accent/70 flex flex-col gap-3">
+        <div className="absolute bottom-4 left-4 z-1000 w-96 rounded-xl shadow p-4 bg-background/50 text-center border border-accent/70 flex flex-col gap-3">
             <h3 className="text-sm font-semibold text-foreground">{data.title}</h3>
             <div
                 className="w-full rounded-xl border border-accent/70 h-6"

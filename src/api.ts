@@ -1,3 +1,4 @@
+import { airPollutionSchema } from "./schemas/airPollutionSchema"
 import { createApiResponseSchema } from "./schemas/apiGatewayResSchema"
 import { geocodeSchema, type GeoCodeData } from "./schemas/geocodeSchema"
 import { weatherSchema } from "./schemas/weatherSchema"
@@ -10,7 +11,7 @@ export const getWeather = async (data: { lat: number; lon: number; appId?: strin
     const params = new URLSearchParams({
         lat: lat.toString(),
         lon: lon.toString(),
-        ...(appId ? { appId: appId ?? "" } : {}),
+        ...(appId ? { apiKey: appId ?? "" } : {}),
     })
     const url = `${baseUrl}/weather?${params}`
 
@@ -37,7 +38,7 @@ export const getGeocode = async (data: {
     const params = new URLSearchParams({
         location: location.toString(),
         limit: "1",
-        ...(appId ? { appId: appId ?? "" } : {}),
+        ...(appId ? { apiKey: appId ?? "" } : {}),
     })
     const url = `${baseUrl}/geocode?${params}`
 
@@ -49,6 +50,28 @@ export const getGeocode = async (data: {
         return parsedResponse.data
     } catch (error) {
         console.error("GEOCODE FETCH ERROR:", error)
+        throw error
+    }
+}
+
+export const getAirPollution = async (data: { lat: number; lon: number; appId?: string }) => {
+    const { lat, lon, appId } = data
+
+    const params = new URLSearchParams({
+        lat: lat.toString(),
+        lon: lon.toString(),
+        ...(appId ? { apiKey: appId ?? "" } : {}),
+    })
+    const url = `${baseUrl}/air_pollution?${params}`
+
+    try {
+        const res = await fetch(url)
+        const airPollutionData = await res.json()
+
+        const parsedResponse = createApiResponseSchema(airPollutionSchema).parse(airPollutionData)
+        return parsedResponse.data
+    } catch (error) {
+        console.error("WEATHER FETCH ERROR:", error)
         throw error
     }
 }
