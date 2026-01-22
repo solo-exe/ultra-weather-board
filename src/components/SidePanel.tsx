@@ -1,35 +1,65 @@
 import { getAirPollution } from "@/api"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Suspense } from "react"
+import { Suspense, type Dispatch, type SetStateAction } from "react"
 import Card from "./cards/Card"
 import { Slider } from "./ui/slider"
 import clsx from "clsx"
-
-type Props = {
-    coords: { lat: number; lon: number }
-}
+import { TooltipContent, TooltipTrigger, Tooltip } from "./ui/tooltip"
+import InformationSVG from "../assets/information.svg?react"
+import ChevronLeftSVG from "../assets/ChevronLeft.svg?react"
+import AirPollutionSkeleton from "./skeletons/SidePanelSkeleton"
 
 const SidePanel = (props: Props) => {
+    const { setIsSidePanelOpen, isSidePanelOpen } = props
+
     return (
-        <div className="fixed top-0 right-0 h-screen w-90 shadow-md bg-sidebar z-1001 py-8 px-4 overflow-y-scroll">
-            <Suspense>
+        <div
+            className={clsx(
+                "fixed top-0 right-0 h-screen w-100 shadow-md bg-sidebar z-1001 py-8 px-4 overflow-y-scroll transition-transform duration-1000 ease-in-out",
+                isSidePanelOpen ? "translate-x-0" : "translate-x-full",
+            )}
+        >
+            <button onClick={() => setIsSidePanelOpen(false)}>
+                <ChevronLeftSVG className="size-8 invert -ml-2" />
+            </button>
+            <Suspense fallback={<AirPollutionSkeleton />}>
                 <AirPollution {...props} />
             </Suspense>
         </div>
     )
 }
 
-const AirPollution = ({ coords }: Props) => {
+type Props = {
+    coords: { lat: number; lon: number }
+    isSidePanelOpen: boolean
+    setIsSidePanelOpen: Dispatch<SetStateAction<boolean>>
+    apiKey?: string
+}
+
+const AirPollution = ({ coords, apiKey }: Props) => {
     const { data } = useSuspenseQuery({
         queryKey: ["airPollution", coords],
-        queryFn: () => getAirPollution({ lat: coords.lat, lon: coords.lon }),
+        queryFn: () => getAirPollution({ lat: coords.lat, lon: coords.lon, apiKey }),
     })
 
     return (
         <div className="flex flex-col gap-4">
             <h1 className="text-2xl font-semibold">Air Pollution</h1>
             <h1 className="text-5xl font-semibold">{data.list[0].main.aqi}</h1>
-            <h1 className="text-2xl font-semibold">AQI</h1>
+            <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-semibold">AQI</h1>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <InformationSVG className="size-4 invert" />
+                    </TooltipTrigger>
+                    <TooltipContent className="z-2000">
+                        <p className="max-w-xs">
+                            Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good, 2 =
+                            Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor
+                        </p>
+                    </TooltipContent>
+                </Tooltip>
+            </div>
             {Object.entries(data.list[0].components).map(([key, value]) => {
                 const pollutant = airQualityRanges[key.toLocaleUpperCase() as Pollutant]
 
@@ -68,7 +98,19 @@ const AirPollution = ({ coords }: Props) => {
                         className="hover:scale-105 transition-transform duration-300 from-sidebar-accent to-sidebar-accent/60 gap-0!"
                     >
                         <div className="flex justify-between">
-                            <span className="text-lg font-bold capitalize">{key}</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold capitalize">{key}</span>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <InformationSVG className="size-4 invert" />
+                                    </TooltipTrigger>
+                                    <TooltipContent className="z-2000">
+                                        <p className="max-w-xs">
+                                            {`Concentration of ${pollutantNameMapping[key.toLocaleUpperCase() as Pollutant]}`}
+                                        </p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </div>
                             <span className="text-lg font-semibold">{value}</span>
                         </div>
                         <Slider disabled min={0} max={max} value={[value]} />
@@ -168,15 +210,15 @@ const airQualityRanges: AirQualityRanges = {
     },
 }
 
-// const pollutantNameMapping: Record<Pollutant, string> = {
-//     SO2: "Sulfur dioxide",
-//     NO2: "Nitrogen dioxide",
-//     PM10: "Particulate matter 10",
-//     PM2_5: "Fine particles matter",
-//     O3: "Ozone",
-//     CO: "Carbon monoxide",
-//     NO: "Nitrogen monoxide",
-//     NH3: "Ammonia",
-// }
+const pollutantNameMapping: Record<Pollutant, string> = {
+    SO2: "Sulfur dioxide",
+    NO2: "Nitrogen dioxide",
+    PM10: "Particulate matter 10",
+    PM2_5: "Fine particles matter",
+    O3: "Ozone",
+    CO: "Carbon monoxide",
+    NO: "Nitrogen monoxide",
+    NH3: "Ammonia",
+}
 
 export default SidePanel

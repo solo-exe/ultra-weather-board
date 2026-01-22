@@ -8,11 +8,10 @@ type Props = {
     coords: Coords
     onMapClick: (lat: number, lon: number) => void
     mapType: string
+    apiKey?: string
 }
 
-const APIKey = "a7befb129c4a71e1ed7001c9de409e25"
-
-const Map = ({ coords, onMapClick, mapType }: Props) => {
+const Map = ({ coords, onMapClick, mapType, apiKey }: Props) => {
     const { lat, lon } = coords
     return (
         <MapContainer
@@ -29,7 +28,7 @@ const Map = ({ coords, onMapClick, mapType }: Props) => {
             <TileLayer
                 opacity={0.7}
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${APIKey}`}
+                url={`http://localhost:7002/api/v1/openweather/map_layer/${mapType}/{z}/{x}/{y}${apiKey ? `/?apiKey=${apiKey}` : ""}`}
             />
             <MapClick onMapClick={onMapClick} coords={coords} />
             <Marker position={[lat, lon]} />

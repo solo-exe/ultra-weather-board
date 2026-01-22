@@ -9,16 +9,17 @@ import {
     SelectValue,
 } from "../ui/select"
 import type { Dispatch, SetStateAction } from "react"
+import type { MapType } from "@/types"
 
 type Props = {
-    mapType: string
-    setMapType: Dispatch<SetStateAction<string>>
+    mapType: MapType
+    setMapType: Dispatch<SetStateAction<MapType>>
 }
 
 const MapTypeDropdown = ({ mapType, setMapType }: Props) => {
     return (
         <div className="flex justify-center">
-            <Select value={mapType} onValueChange={(value) => setMapType(value)}>
+            <Select value={mapType} onValueChange={(value) => setMapType(value as MapType)}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Pick a map type" />
                 </SelectTrigger>

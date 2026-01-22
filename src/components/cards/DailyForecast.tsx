@@ -4,11 +4,13 @@ import { getWeather } from "../../api"
 import WeatherIcon from "../WeatherIcon"
 import type { Coords } from "../../types"
 
-const DailyForecast = ({ coords }: { coords: Coords }) => {
+type Props = { coords: Coords; apiKey?: string }
+
+const DailyForecast = ({ coords, apiKey }: Props) => {
     const { lat, lon } = coords
     const { data } = useSuspenseQuery({
         queryKey: ["weather", coords],
-        queryFn: async () => await getWeather({ lat, lon }),
+        queryFn: async () => await getWeather({ lat, lon, apiKey }),
 
         refetchOnWindowFocus: false,
         retry: false,

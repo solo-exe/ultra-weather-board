@@ -4,11 +4,13 @@ import Card from "./Card"
 import WeatherIcon from "../WeatherIcon"
 import type { Coords } from "../../types"
 
-const HourlyForcast = ({ coords }: { coords: Coords }) => {
+type Props = { coords: Coords; apiKey?: string }
+
+const HourlyForcast = ({ coords, apiKey }: Props) => {
     const { lat, lon } = coords
     const { data } = useSuspenseQuery({
         queryKey: ["weather", coords],
-        queryFn: async () => await getWeather({ lat, lon }),
+        queryFn: async () => await getWeather({ lat, lon, apiKey }),
 
         refetchOnWindowFocus: false,
         retry: false,
@@ -18,7 +20,7 @@ const HourlyForcast = ({ coords }: { coords: Coords }) => {
 
     return (
         <Card title="Hourly Forecast (48 Hours)" childrenClassname="flex gap-6 overflow-x-scroll">
-            {data.hourly.map((hour) => (
+            {data.hourly?.map((hour) => (
                 <div key={hour.dt} className="flex flex-col gap-2 items-center p-2">
                     <p className="whitespace-nowrap">
                         {new Date(hour.dt * 1000).toLocaleTimeString(undefined, {

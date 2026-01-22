@@ -60,11 +60,13 @@ const FormatComponent: React.FC<{ value: string; number: number }> = ({ value, n
     return number
 }
 
-const AdditionalInfo = ({ coords }: { coords: Coords }) => {
+type Props = { coords: Coords; apiKey?: string }
+
+const AdditionalInfo = ({ coords, apiKey }: Props) => {
     const { lat, lon } = coords
     const { data } = useSuspenseQuery({
         queryKey: ["weather", coords],
-        queryFn: async () => await getWeather({ lat, lon }),
+        queryFn: async () => await getWeather({ lat, lon, apiKey }),
 
         refetchOnWindowFocus: false,
         retry: false,
