@@ -45,6 +45,15 @@ function App() {
                       : { lat: 0, lon: 0 }),
               }
 
+    const handleApiKeySubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const key = formData.get("apiKey") as string
+        if (key.trim()) {
+            setApiKey(key.trim())
+        }
+    }
+
     return (
         <>
             <div className="flex flex-col gap-8">
@@ -64,6 +73,30 @@ function App() {
                         <HamburgerSVG className="size-8 invert" />
                     </button>
                 </div>
+                {!apiKey && (
+                    <div className="p-4 rounded-xl bg-linear-to-br from-card to-card/60 shadow-md flex flex-col gap-4 max-w-2xl mb-8">
+                        <h2 className="text-2xl font-semibold">OpenWeather API Key (Optional)</h2>
+                        <p className="text-sm text-muted-foreground">
+                            If you have an API key for OpenWeather, you can paste it here to utilize
+                            over the 1,000 free requests per day. Your API key will not be saved and
+                            will only be stored in your browser's memory for this session.
+                        </p>
+                        <form onSubmit={handleApiKeySubmit} className="flex gap-2">
+                            <input
+                                type="text"
+                                name="apiKey"
+                                placeholder="Enter your API key"
+                                className="flex-1 px-3 py-2 rounded-md bg-sidebar border border-muted-foreground/20 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            />
+                            <button
+                                type="submit"
+                                className="px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                            >
+                                Submit
+                            </button>
+                        </form>
+                    </div>
+                )}
                 <div className="relative">
                     <Map
                         coords={coords}
