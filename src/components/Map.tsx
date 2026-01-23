@@ -18,7 +18,7 @@ const Map = ({ coords, onMapClick, mapType, apiKey }: Props) => {
             // key={`${lat},${lon}`} // added to force rerendeer when coordinates change
             center={[lat, lon]}
             zoom={5}
-            style={{ width: "100vw", height: "800px" }}
+            style={{ width: "100%", height: "100%" }}
         >
             <MapTileLayer />
             {/* <TileLayer

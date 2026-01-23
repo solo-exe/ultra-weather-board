@@ -44,12 +44,12 @@ const AirPollutionSkeleton = () => {
                             {Array.from({ length: 5 }).map((_, i) => (
                                 <span
                                     className={clsx(
-                                        "px-2 py-1 rounded-md text-xs font-medium",
+                                        "px-2 py-1 rounded-md text-15px font-medium",
                                         "bg-muted text-muted-foreground",
                                     )}
                                     key={i}
                                 >
-                                    <Skeleton className="w-10 h-4" />
+                                    <Skeleton className="w-5 h-4" />
                                 </span>
                             ))}
                         </div>

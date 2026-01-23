@@ -1,6 +1,6 @@
 import { getAirPollution } from "@/api"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import { Suspense, type Dispatch, type SetStateAction } from "react"
+import { Suspense, useEffect, type Dispatch, type SetStateAction } from "react"
 import Card from "./cards/Card"
 import { Slider } from "./ui/slider"
 import clsx from "clsx"
@@ -12,15 +12,35 @@ import AirPollutionSkeleton from "./skeletons/SidePanelSkeleton"
 const SidePanel = (props: Props) => {
     const { setIsSidePanelOpen, isSidePanelOpen } = props
 
+    useEffect(() => {
+        const handleResize = () => {
+            // Tailwind's lg breakpoint is 1024px
+            if (window.innerWidth < 1024) {
+                setIsSidePanelOpen(false)
+            } else {
+                setIsSidePanelOpen(true)
+            }
+        }
+
+        // Check on mount
+        handleResize()
+
+        // Add event listener
+        window.addEventListener("resize", handleResize)
+
+        // Cleanup
+        return () => window.removeEventListener("resize", handleResize)
+    }, [setIsSidePanelOpen])
+
     return (
         <div
             className={clsx(
-                "fixed top-0 right-0 h-screen w-100 shadow-md bg-sidebar z-1001 py-8 px-4 overflow-y-scroll transition-transform duration-1000 ease-in-out",
+                "fixed top-0 right-0 h-screen w-(var(--sidebar-width)) shadow-md bg-sidebar z-1001 h-full py-8 px-4 overflow-y-scroll transition-transform duration-1000 ease-in-out lg:translate-x-0!",
                 isSidePanelOpen ? "translate-x-0" : "translate-x-full",
             )}
         >
             <button onClick={() => setIsSidePanelOpen(false)}>
-                <ChevronLeftSVG className="size-8 invert -ml-2" />
+                <ChevronLeftSVG className="size-8 invert -ml-2 lg:hidden" />
             </button>
             <Suspense fallback={<AirPollutionSkeleton />}>
                 <AirPollution {...props} />
@@ -122,7 +142,7 @@ const AirPollution = ({ coords, apiKey }: Props) => {
                             {Object.keys(pollutant).map((quality) => (
                                 <span
                                     className={clsx(
-                                        "px-2 py-1 rounded-md text-xs font-medium",
+                                        "px-2 py-1 rounded-md text-[10px] font-medium text-center",
                                         quality === currentLevel
                                             ? qualityColour
                                             : "bg-muted text-muted-foreground",

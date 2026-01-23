@@ -21,16 +21,19 @@ const HourlyForcast = ({ coords, apiKey }: Props) => {
     return (
         <Card title="Hourly Forecast (48 Hours)" childrenClassname="flex gap-6 overflow-x-scroll">
             {data.hourly?.map((hour) => (
-                <div key={hour.dt} className="flex flex-col gap-2 items-center p-2">
-                    <p className="whitespace-nowrap">
+                <div
+                    key={hour.dt}
+                    className="flex flex-col gap-2 items-center p-2 xl:justify-between"
+                >
+                    <p className="whitespace-nowrap xl:scale-110">
                         {new Date(hour.dt * 1000).toLocaleTimeString(undefined, {
                             hour: "numeric",
                             minute: "2-digit",
                             hour12: true,
                         })}
                     </p>
-                    <WeatherIcon icon={hour.weather[0].icon} />
-                    <p>{Math.round(hour.temp)}°C</p>
+                    <WeatherIcon icon={hour.weather[0].icon} className="xl:size-10" />
+                    <p className="xl:scale-110">{Math.round(hour.temp)}°C</p>
                 </div>
             ))}
         </Card>

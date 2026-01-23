@@ -16,8 +16,11 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    --sidebar-width: 20rem;
+
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
+    --background: oklch(26.744% 0.02484 18.771);
     --foreground: oklch(0.141 0.005 285.823);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.141 0.005 285.823);

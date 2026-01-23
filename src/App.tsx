@@ -1,14 +1,10 @@
-// import { useQuery } from "@tanstack/react-query"
-// import { getWeather } from "./api"
+import { Suspense, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+
 import DailyForecast from "./components/cards/DailyForecast"
 import HourlyForecast from "./components/cards/HourlyForecast"
 import CurrentWeather from "./components/cards/CurrentWeather"
 import AdditionalInfo from "./components/cards/AdditionalInfo"
-import Map from "./components/Map"
-import { Suspense, useState } from "react"
-import type { Coords, MapType } from "./types"
-import { getGeocode } from "./api"
-import { useQuery } from "@tanstack/react-query"
 import LocationDropdown from "./components/dropdowns/LocationDropdown"
 import MapTypeDropdown from "./components/dropdowns/MapTypeDropdown"
 import MapLegend from "./components/MapLegend"
@@ -18,12 +14,15 @@ import HourlySkeleton from "./components/skeletons/HourlySkeleton"
 import AddtitionalInfoSkeleton from "./components/skeletons/AddtitionalInfoSkeleton"
 import SidePanel from "./components/SidePanel"
 import HamburgerSVG from "./assets/hamburger.svg?react"
+import Map from "./components/Map"
+import type { Coords, MapType } from "./types"
+import { getGeocode } from "./api"
 
 function App() {
     const [coordinates, setCoords] = useState<Coords>({ lat: 10, lon: 25 })
     const [location, setLocation] = useState("")
     const [mapType, setMapType] = useState<MapType>("clouds_new")
-    const [isSidePanelOpen, setIsSidePanelOpen] = useState(true)
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
     const [apiKey, setApiKey] = useState<string | undefined>(undefined)
 
     const { data: geocodeData } = useQuery({
@@ -56,7 +55,7 @@ function App() {
 
     return (
         <>
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 p-8 w-full lg:w-[calc(100dvw-var(--sidebar-width))] h-full">
                 <div className="flex justify-between gap-8">
                     <div className="flex gap-8">
                         <div className="flex flex-col gap-2">
@@ -64,13 +63,12 @@ function App() {
                             <LocationDropdown location={location} setLocation={setLocation} />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-center font-bold">Map Type</h1>
+                            <h1 className="text-center font-bold whitespace-nowrap">Map Type</h1>
                             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
                         </div>
                     </div>
-
                     <button className="" onClick={() => setIsSidePanelOpen(true)}>
-                        <HamburgerSVG className="size-8 invert" />
+                        <HamburgerSVG className="size-6 invert lg:hidden" />
                     </button>
                 </div>
                 {!apiKey && (
@@ -97,27 +95,37 @@ function App() {
                         </form>
                     </div>
                 )}
-                <div className="relative">
-                    <Map
-                        coords={coords}
-                        onMapClick={(lat, lon) => onMapClick(lat, lon)}
-                        mapType={mapType}
-                        apiKey={apiKey}
-                    />
-                    <MapLegend mapType={mapType} />
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-4">
+                    <div className="relative md:col-span-2 xl:col-span-4 xl:row-span-2 order-1 h-120 xl:h-auto ">
+                        <Map
+                            coords={coords}
+                            onMapClick={(lat, lon) => onMapClick(lat, lon)}
+                            mapType={mapType}
+                            apiKey={apiKey}
+                        />
+                        <MapLegend mapType={mapType} />
+                    </div>
+                    <div className="col-span-1 xl:row-span-2 order-2">
+                        <Suspense fallback={<CurrentSkeleton />}>
+                            <CurrentWeather coords={coords} apiKey={apiKey} />
+                        </Suspense>
+                    </div>
+                    <div className="col-span-1 xl:row-span-2 order-3 xl:order-4">
+                        <Suspense fallback={<DailySkeleton />}>
+                            <DailyForecast coords={coords} apiKey={apiKey} />
+                        </Suspense>
+                    </div>
+                    <div className="col-span-1 md:col-span-2 xl:row-span-1 order-4 xl:order-3">
+                        <Suspense fallback={<HourlySkeleton />}>
+                            <HourlyForecast coords={coords} apiKey={apiKey} />
+                        </Suspense>
+                    </div>
+                    <div className="col-span-1 md:col-span-2 xl:row-span-1 order-5">
+                        <Suspense fallback={<AddtitionalInfoSkeleton />}>
+                            <AdditionalInfo coords={coords} apiKey={apiKey} />
+                        </Suspense>
+                    </div>
                 </div>
-                <Suspense fallback={<CurrentSkeleton />}>
-                    <CurrentWeather coords={coords} apiKey={apiKey} />
-                </Suspense>
-                <Suspense fallback={<HourlySkeleton />}>
-                    <HourlyForecast coords={coords} apiKey={apiKey} />
-                </Suspense>
-                <Suspense fallback={<DailySkeleton />}>
-                    <DailyForecast coords={coords} apiKey={apiKey} />
-                </Suspense>
-                <Suspense fallback={<AddtitionalInfoSkeleton />}>
-                    <AdditionalInfo coords={coords} apiKey={apiKey} />
-                </Suspense>
             </div>
             <SidePanel
                 coords={coords}

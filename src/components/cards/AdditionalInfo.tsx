@@ -75,7 +75,10 @@ const AdditionalInfo = ({ coords, apiKey }: Props) => {
     })
 
     return (
-        <Card title="Additional Weather Info" childrenClassname="flex flex-col gap-8">
+        <Card
+            title="Additional Weather Info"
+            childrenClassname="grid grid-cols-1 md:grid-cols-2 gap-8"
+        >
             {rows.map(({ label, value, Icon }) => (
                 <div key={value} className="flex justify-between">
                     <div className="flex gap-4">
