@@ -35,7 +35,7 @@ const SidePanel = (props: Props) => {
     return (
         <div
             className={clsx(
-                "fixed top-0 right-0 h-screen w-(var(--sidebar-width)) shadow-md bg-sidebar z-1001 h-full py-8 px-4 overflow-y-scroll transition-transform duration-1000 ease-in-out lg:translate-x-0!",
+                "fixed top-0 right-0 w-(var(--sidebar-width)) shadow-md bg-sidebar z-1001 h-screen py-8 px-4 overflow-y-scroll transition-transform duration-1000 ease-in-out lg:translate-x-0!",
                 isSidePanelOpen ? "translate-x-0" : "translate-x-full",
             )}
         >
