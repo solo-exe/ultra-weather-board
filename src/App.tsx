@@ -30,26 +30,21 @@ function App() {
 
     const [minutesRemaining, setMinutesRemaining] = useState<number>(0)
     const [apiKey, setApiKey] = useState<string | undefined>(() => {
-        // Initialize from localStorage on mount
         const storedKey = getApiKey()
-        return storedKey || undefined
+        return storedKey ?? undefined
     })
 
-    // Check for API key expiration and update remaining time
     useEffect(() => {
-        if (!apiKey) {
-            return
-        }
+        if (!apiKey) return
 
         // Update immediately on mount/apiKey change
         const updateRemainingTime = () => {
             const timeRemaining = getTimeUntilExpiration()
+
             if (timeRemaining === 0) {
-                // Key has expired
                 setApiKey(undefined)
                 setMinutesRemaining(0)
             } else {
-                // Convert milliseconds to minutes and round up
                 const minutes = Math.ceil(timeRemaining / 60000)
                 setMinutesRemaining(minutes)
             }
@@ -57,8 +52,8 @@ function App() {
 
         updateRemainingTime()
 
-        // Check every second for smoother countdown
-        const interval = setInterval(updateRemainingTime, 1000)
+        // Check every 30 seconds for smoother countdown
+        const interval = setInterval(updateRemainingTime, 30000)
 
         return () => clearInterval(interval)
     }, [apiKey])
