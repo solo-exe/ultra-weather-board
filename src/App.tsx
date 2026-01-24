@@ -71,14 +71,17 @@ function App() {
                             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
                         </div>
                     </div>
-                    {/* <div className="ml-auto"> */}
-                    <div className="hidden sm:block">
-                        <LightDarkToggle />
+                    <div className="flex gap-8">
+                        <div className="hidden md:block">
+                            <LightDarkToggle />
+                        </div>
+                        <button
+                            className="hidden sm:block self-start"
+                            onClick={() => setIsSidePanelOpen(true)}
+                        >
+                            <HamburgerSVG className="size-6 lg:hidden" />
+                        </button>
                     </div>
-                    <button className="hidden xs:block" onClick={() => setIsSidePanelOpen(true)}>
-                        <HamburgerSVG className="size-6 lg:hidden" />
-                    </button>
-                    {/* </div> */}
                 </div>
 
                 {!apiKey && <ApiKeyForm handleApiKeySubmit={handleApiKeySubmit} />}

@@ -8,7 +8,7 @@ type Props = {
 
 const MobileHeader = ({ setIsSidePanelOpen }: Props) => {
     return (
-        <div className="w-full h-16 p-4 bg-background sticky top-0 sm:hidden flex justify-end z-1001 gap-8">
+        <div className="w-full h-16 p-4 bg-background sticky top-0 md:hidden flex justify-end z-1001 gap-8">
             <LightDarkToggle />
 
             <button onClick={() => setIsSidePanelOpen(true)}>
