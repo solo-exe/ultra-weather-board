@@ -76,7 +76,7 @@ function App() {
                             <LightDarkToggle />
                         </div>
                         <button
-                            className="hidden sm:block self-start"
+                            className="hidden md:block self-start"
                             onClick={() => setIsSidePanelOpen(true)}
                         >
                             <HamburgerSVG className="size-6 lg:hidden" />
