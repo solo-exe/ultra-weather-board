@@ -40,7 +40,7 @@ const SidePanel = (props: Props) => {
             )}
         >
             <button onClick={() => setIsSidePanelOpen(false)}>
-                <ChevronLeftSVG className="size-8 invert -ml-2 lg:hidden" />
+                <ChevronLeftSVG className="size-8 -ml-2 lg:hidden" />
             </button>
             <Suspense fallback={<AirPollutionSkeleton />}>
                 <AirPollution {...props} />
@@ -70,7 +70,7 @@ const AirPollution = ({ coords, apiKey }: Props) => {
                 <h1 className="text-2xl font-semibold">AQI</h1>
                 <Tooltip>
                     <TooltipTrigger asChild>
-                        <InformationSVG className="size-4 invert" />
+                        <InformationSVG className="size-4" />
                     </TooltipTrigger>
                     <TooltipContent className="z-2000">
                         <p className="max-w-xs">
@@ -122,7 +122,7 @@ const AirPollution = ({ coords, apiKey }: Props) => {
                                 <span className="text-lg font-bold capitalize">{key}</span>
                                 <Tooltip>
                                     <TooltipTrigger asChild>
-                                        <InformationSVG className="size-4 invert" />
+                                        <InformationSVG className="size-4" />
                                     </TooltipTrigger>
                                     <TooltipContent className="z-2000">
                                         <p className="max-w-xs">

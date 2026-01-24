@@ -49,7 +49,7 @@ const AirPollutionSkeleton = () => {
                                     )}
                                     key={i}
                                 >
-                                    <Skeleton className="w-5 h-4" />
+                                    <Skeleton className="w-8 h-4" />
                                 </span>
                             ))}
                         </div>

@@ -17,8 +17,8 @@ const ApiKeyForm = ({ handleApiKeySubmit }: Props) => {
                 <input
                     type="text"
                     name="apiKey"
-                    placeholder="Enter your API key"
-                    className="flex-1 px-3 py-2 rounded-md bg-sidebar border border-muted-foreground/20 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                    placeholder="Paste your API key"
+                    className="flex-1 px-3 py-2 rounded-md bg-sidebar border border-muted-foreground/20 text-foreground placeholder:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                 />
                 <button
                     type="submit"

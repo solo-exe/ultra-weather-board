@@ -20,7 +20,7 @@ const LocationDropdown = ({ location, setLocation }: Props) => {
         <div className="flex justify-center">
             <Select value={location} onValueChange={(value) => setLocation(value)}>
                 <SelectTrigger className="w-full md:w-[180px]">
-                    <SelectValue placeholder="Pick a location" />
+                    <SelectValue className="text-foreground" placeholder="Pick a location" />
                 </SelectTrigger>
                 <SelectContent className="z-1001">
                     <SelectGroup>

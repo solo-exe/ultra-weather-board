@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:is(.dark *));
 
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -22,7 +22,7 @@
     --radius: 0.625rem;
     --background: oklch(100% 0.00011 271.152);
     --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
+    --card: oklch(0.97 0 0);
     --card-foreground: oklch(0.141 0.005 285.823);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.141 0.005 285.823);
@@ -31,7 +31,7 @@
     --secondary: oklch(0.967 0.001 286.375);
     --secondary-foreground: oklch(0.21 0.006 285.885);
     --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(36.309% 0.0137 285.663 / 0);
+    --muted-foreground: oklch(32.972% 0.00352 286.054);
     --accent: oklch(0.967 0.001 286.375);
     --accent-foreground: oklch(0.21 0.006 285.885);
     --destructive: oklch(0.577 0.245 27.325);
@@ -126,6 +126,10 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+.dark svg {
+    filter: invert(1);
 }
 
 @layer base {

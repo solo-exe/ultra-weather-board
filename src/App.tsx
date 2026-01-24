@@ -71,15 +71,14 @@ function App() {
                             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
                         </div>
                     </div>
-                    <div className="ml-auto">
+                    {/* <div className="ml-auto"> */}
+                    <div className="hidden sm:block">
                         <LightDarkToggle />
-                        <button
-                            className="hidden xs:block"
-                            onClick={() => setIsSidePanelOpen(true)}
-                        >
-                            <HamburgerSVG className="size-6 invert lg:hidden" />
-                        </button>
                     </div>
+                    <button className="hidden xs:block" onClick={() => setIsSidePanelOpen(true)}>
+                        <HamburgerSVG className="size-6 lg:hidden" />
+                    </button>
+                    {/* </div> */}
                 </div>
 
                 {!apiKey && <ApiKeyForm handleApiKeySubmit={handleApiKeySubmit} />}

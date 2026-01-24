@@ -54,9 +54,7 @@ const FormatComponent: React.FC<{ value: string; number: number }> = ({ value, n
         })
     }
     if (value === "wind_deg")
-        return (
-            <UpArrowSVG style={{ transform: `rotate(${number}deg)` }} className="size-6 invert" />
-        )
+        return <UpArrowSVG style={{ transform: `rotate(${number}deg)` }} className="size-6" />
     return number
 }
 
@@ -82,8 +80,8 @@ const AdditionalInfo = ({ coords, apiKey }: Props) => {
             {rows.map(({ label, value, Icon }) => (
                 <div key={value} className="flex flex-col sm:flex-row justify-between">
                     <div className="flex gap-4">
-                        <span className="text-gray-500">{label}</span>
-                        <Icon className="size-8 invert" />
+                        <span className="text-foreground">{label}</span>
+                        <Icon className="size-8 dark:invert" />
                     </div>
                     <span>
                         <FormatComponent value={value} number={data?.current?.[value] || 0} />
