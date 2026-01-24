@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from "react"
+import { Suspense, useState, useEffect, type FormEvent } from "react"
 import { useQuery } from "@tanstack/react-query"
 
 import DailyForecast from "./components/cards/DailyForecast"
@@ -77,7 +77,7 @@ function App() {
                       : { lat: 0, lon: 0 }),
               }
 
-    const handleApiKeySubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleApiKeySubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const formData = new FormData(e.currentTarget)
         const key = formData.get("apiKey") as string
