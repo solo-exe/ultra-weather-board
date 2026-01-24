@@ -10,8 +10,8 @@ const ApiKeyForm = ({ handleApiKeySubmit }: Props) => {
             <h2 className="text-2xl font-semibold">OpenWeather API Key (Optional)</h2>
             <p className="text-sm text-muted-foreground">
                 If you have an API key for OpenWeather, you can paste it here to utilize over the
-                1,000 free requests per day. Your API key will not be saved and will only be stored
-                in your browser's memory for this session.
+                1,000 free requests per day. Your API key will be securely stored in your browser's
+                localStorage and will automatically expire after 30 minutes.
             </p>
             <form onSubmit={handleApiKeySubmit} className="flex flex-col md:flex-row gap-2">
                 <input

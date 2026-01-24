@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react"
+import { Suspense, useState, useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 
 import DailyForecast from "./components/cards/DailyForecast"
@@ -19,18 +19,53 @@ import type { Coords, MapType } from "./types"
 import { getGeocode } from "./api"
 import MobileHeader from "./components/MobileHeader"
 import LightDarkToggle from "./components/LightDarkToggle"
-import ApiKeyForm from "./components/cards/ApiKeyForm"
+import ApiKeyForm from "./components/ApiKeyForm"
+import { saveApiKey, getApiKey, clearApiKey, getTimeUntilExpiration } from "./utils/apiKeyStorage"
 
 function App() {
     const [coordinates, setCoords] = useState<Coords>({ lat: 10, lon: 25 })
     const [location, setLocation] = useState("")
     const [mapType, setMapType] = useState<MapType>("clouds_new")
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
-    const [apiKey, setApiKey] = useState<string | undefined>(undefined)
+
+    const [minutesRemaining, setMinutesRemaining] = useState<number>(0)
+    const [apiKey, setApiKey] = useState<string | undefined>(() => {
+        // Initialize from localStorage on mount
+        const storedKey = getApiKey()
+        return storedKey || undefined
+    })
+
+    // Check for API key expiration and update remaining time
+    useEffect(() => {
+        if (!apiKey) {
+            return
+        }
+
+        // Update immediately on mount/apiKey change
+        const updateRemainingTime = () => {
+            const timeRemaining = getTimeUntilExpiration()
+            if (timeRemaining === 0) {
+                // Key has expired
+                setApiKey(undefined)
+                setMinutesRemaining(0)
+            } else {
+                // Convert milliseconds to minutes and round up
+                const minutes = Math.ceil(timeRemaining / 60000)
+                setMinutesRemaining(minutes)
+            }
+        }
+
+        updateRemainingTime()
+
+        // Check every second for smoother countdown
+        const interval = setInterval(updateRemainingTime, 1000)
+
+        return () => clearInterval(interval)
+    }, [apiKey])
 
     const { data: geocodeData } = useQuery({
         queryKey: ["geocode", location],
-        queryFn: () => getGeocode({ location, apiKey }),
+        queryFn: () => getGeocode({ location, apiKey: apiKey ?? undefined }),
     })
 
     const onMapClick = (lat: number, lon: number) => {
@@ -52,8 +87,15 @@ function App() {
         const formData = new FormData(e.currentTarget)
         const key = formData.get("apiKey") as string
         if (key.trim()) {
-            setApiKey(key.trim())
+            const trimmedKey = key.trim()
+            saveApiKey(trimmedKey)
+            setApiKey(trimmedKey)
         }
+    }
+
+    const handleClearApiKey = () => {
+        clearApiKey()
+        setApiKey(undefined)
     }
 
     return (
@@ -85,6 +127,23 @@ function App() {
                 </div>
 
                 {!apiKey && <ApiKeyForm handleApiKeySubmit={handleApiKeySubmit} />}
+                {apiKey && (
+                    <div className="p-4 rounded-xl bg-linear-to-br from-card to-card/60 shadow-md flex gap-2 items-center justify-between max-w-2xl mb-8">
+                        <p className="text-sm text-muted-foreground">
+                            API key is active and will expire in{" "}
+                            <span className="font-semibold text-foreground">
+                                {minutesRemaining}
+                            </span>{" "}
+                            {minutesRemaining === 1 ? "minute" : "minutes"}.
+                        </p>
+                        <button
+                            onClick={handleClearApiKey}
+                            className="px-4 py-2 rounded-md bg-destructive text-destructive-foreground font-medium hover:bg-destructive/90 transition-colors"
+                        >
+                            Clear API Key
+                        </button>
+                    </div>
+                )}
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-4">
                     <div className="relative md:col-span-2 xl:col-span-4 xl:row-span-2 order-1 h-120 xl:h-auto ">
@@ -92,28 +151,28 @@ function App() {
                             coords={coords}
                             onMapClick={(lat, lon) => onMapClick(lat, lon)}
                             mapType={mapType}
-                            apiKey={apiKey}
+                            apiKey={apiKey ?? undefined}
                         />
                         <MapLegend mapType={mapType} />
                     </div>
                     <div className="col-span-1 xl:row-span-2 order-2">
                         <Suspense fallback={<CurrentSkeleton />}>
-                            <CurrentWeather coords={coords} apiKey={apiKey} />
+                            <CurrentWeather coords={coords} apiKey={apiKey ?? undefined} />
                         </Suspense>
                     </div>
                     <div className="col-span-1 xl:row-span-2 order-3 xl:order-4">
                         <Suspense fallback={<DailySkeleton />}>
-                            <DailyForecast coords={coords} apiKey={apiKey} />
+                            <DailyForecast coords={coords} apiKey={apiKey ?? undefined} />
                         </Suspense>
                     </div>
                     <div className="col-span-1 md:col-span-2 xl:row-span-1 order-4 xl:order-3">
                         <Suspense fallback={<HourlySkeleton />}>
-                            <HourlyForecast coords={coords} apiKey={apiKey} />
+                            <HourlyForecast coords={coords} apiKey={apiKey ?? undefined} />
                         </Suspense>
                     </div>
                     <div className="col-span-1 md:col-span-2 xl:row-span-1 order-5">
                         <Suspense fallback={<AddtitionalInfoSkeleton />}>
-                            <AdditionalInfo coords={coords} apiKey={apiKey} />
+                            <AdditionalInfo coords={coords} apiKey={apiKey ?? undefined} />
                         </Suspense>
                     </div>
                 </div>
