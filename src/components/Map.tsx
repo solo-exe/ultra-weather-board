@@ -34,12 +34,10 @@ const Map = ({ coords, onMapClick, mapType, apiKey }: Props) => {
             style={{ width: "100%", height: "100%" }}
         >
             <MapTileLayer />
-            {/* <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            /> */}
             <TileLayer
                 opacity={0.7}
+                keepBuffer={8} // Keep extra tiles in memory (default is 2)
+                updateWhenZooming={false} // Don't request tiles while actively zooming
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url={`http://localhost:7002/api/v1/openweather/map_layer/${mapType}/{z}/{x}/{y}${apiKey ? `?apiKey=${apiKey}` : ""}`}
             />
