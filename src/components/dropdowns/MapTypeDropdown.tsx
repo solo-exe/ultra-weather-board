@@ -20,7 +20,7 @@ const MapTypeDropdown = ({ mapType, setMapType }: Props) => {
     return (
         <div className="flex justify-center">
             <Select value={mapType} onValueChange={(value) => setMapType(value as MapType)}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-full md:w-[180px]">
                     <SelectValue placeholder="Pick a map type" />
                 </SelectTrigger>
                 <SelectContent className="z-1001">

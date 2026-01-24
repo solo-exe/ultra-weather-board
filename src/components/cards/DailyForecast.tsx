@@ -24,7 +24,7 @@ const DailyForecast = ({ coords, apiKey }: Props) => {
             childrenClassname="flex flex-col gap-4 xl:justify-between"
         >
             {data?.daily?.map((day) => (
-                <div key={day.dt} className="flex justify-between">
+                <div key={day.dt} className="flex flex-col sm:flex-row justify-between">
                     <p className="w-30">
                         {new Date(day.dt * 1000).toLocaleDateString(undefined, {
                             weekday: "short",

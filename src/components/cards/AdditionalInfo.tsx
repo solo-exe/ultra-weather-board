@@ -80,7 +80,7 @@ const AdditionalInfo = ({ coords, apiKey }: Props) => {
             childrenClassname="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
             {rows.map(({ label, value, Icon }) => (
-                <div key={value} className="flex justify-between">
+                <div key={value} className="flex flex-col sm:flex-row justify-between">
                     <div className="flex gap-4">
                         <span className="text-gray-500">{label}</span>
                         <Icon className="size-8 invert" />

@@ -17,6 +17,9 @@ import HamburgerSVG from "./assets/hamburger.svg?react"
 import Map from "./components/Map"
 import type { Coords, MapType } from "./types"
 import { getGeocode } from "./api"
+import MobileHeader from "./components/MobileHeader"
+import LightDarkToggle from "./components/LightDarkToggle"
+import ApiKeyForm from "./components/cards/ApiKeyForm"
 
 function App() {
     const [coordinates, setCoords] = useState<Coords>({ lat: 10, lon: 25 })
@@ -55,9 +58,10 @@ function App() {
 
     return (
         <>
-            <div className="flex flex-col gap-8 p-8 w-full lg:w-[calc(100dvw-var(--sidebar-width))] h-full">
-                <div className="flex justify-between gap-8">
-                    <div className="flex gap-8">
+            <MobileHeader setIsSidePanelOpen={setIsSidePanelOpen} />
+            <div className="flex flex-col gap-8 p-8 w-full lg:w-[calc(100dvw-var(--sidebar-width))] h-full min-w-[273px]">
+                <div className="flex flex-col sm:flex-row justify-between gap-8">
+                    <div className="flex flex-col sm:flex-row gap-2 md:gap-4">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-center font-bold">Location</h1>
                             <LocationDropdown location={location} setLocation={setLocation} />
@@ -67,34 +71,19 @@ function App() {
                             <MapTypeDropdown mapType={mapType} setMapType={setMapType} />
                         </div>
                     </div>
-                    <button className="" onClick={() => setIsSidePanelOpen(true)}>
-                        <HamburgerSVG className="size-6 invert lg:hidden" />
-                    </button>
-                </div>
-                {!apiKey && (
-                    <div className="p-4 rounded-xl bg-linear-to-br from-card to-card/60 shadow-md flex flex-col gap-4 max-w-2xl mb-8">
-                        <h2 className="text-2xl font-semibold">OpenWeather API Key (Optional)</h2>
-                        <p className="text-sm text-muted-foreground">
-                            If you have an API key for OpenWeather, you can paste it here to utilize
-                            over the 1,000 free requests per day. Your API key will not be saved and
-                            will only be stored in your browser's memory for this session.
-                        </p>
-                        <form onSubmit={handleApiKeySubmit} className="flex gap-2">
-                            <input
-                                type="text"
-                                name="apiKey"
-                                placeholder="Enter your API key"
-                                className="flex-1 px-3 py-2 rounded-md bg-sidebar border border-muted-foreground/20 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                            />
-                            <button
-                                type="submit"
-                                className="px-4 py-2 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
-                            >
-                                Submit
-                            </button>
-                        </form>
+                    <div className="ml-auto">
+                        <LightDarkToggle />
+                        <button
+                            className="hidden xs:block"
+                            onClick={() => setIsSidePanelOpen(true)}
+                        >
+                            <HamburgerSVG className="size-6 invert lg:hidden" />
+                        </button>
                     </div>
-                )}
+                </div>
+
+                {!apiKey && <ApiKeyForm handleApiKeySubmit={handleApiKeySubmit} />}
+
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-4">
                     <div className="relative md:col-span-2 xl:col-span-4 xl:row-span-2 order-1 h-120 xl:h-auto ">
                         <Map
