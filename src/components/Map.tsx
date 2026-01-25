@@ -39,7 +39,7 @@ const Map = ({ coords, onMapClick, mapType, apiKey }: Props) => {
                 keepBuffer={8} // Keep extra tiles in memory (default is 2)
                 updateWhenZooming={false} // Don't request tiles while actively zooming
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url={`http://localhost:7002/api/v1/openweather/map_layer/${mapType}/{z}/{x}/{y}${apiKey ? `?apiKey=${apiKey}` : ""}`}
+                url={`https://weather-board-api-service.onrender.com/api/v1/openweather/map_layer/${mapType}/{z}/{x}/{y}${apiKey ? `?apiKey=${apiKey}` : ""}`}
             />
             <MapClick onMapClick={onMapClick} coords={coords} />
             <Marker position={[lat, lon]} />
