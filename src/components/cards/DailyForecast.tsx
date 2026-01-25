@@ -21,21 +21,23 @@ const DailyForecast = ({ coords, apiKey }: Props) => {
     return (
         <Card
             title="Daily Forecast (8 Days)"
-            childrenClassname="flex flex-col gap-4 sm:justify-between"
+            childrenClassname="flex flex-col gap-4 xl:justify-between"
         >
             {data?.daily?.map((day) => (
-                <div key={day.dt} className="flex flex-col sm:flex-row justify-between">
-                    <p className="w-30">
+                <div key={day.dt} className="flex justify-between">
+                    <p className="grow w-30">
                         {new Date(day.dt * 1000).toLocaleDateString(undefined, {
                             weekday: "short",
                             day: "numeric",
                             month: "short",
                         })}
                     </p>
-                    <WeatherIcon icon={day.weather[0].icon} />
-                    <p>{Math.round(day.temp.day) + "°C"}</p>
-                    <p className="text-gray-500/75">{Math.round(day.temp.min) + "°C"}</p>
-                    <p className="text-gray-500/75">{Math.round(day.temp.max) + "°C"}</p>
+                    <WeatherIcon icon={day.weather[0].icon} className="grow max-w-10" />
+                    <div className="flex justify-between w-1/2 ">
+                        <p className="px-2">{Math.round(day.temp.day) + "°C"}</p>
+                        <p className="text-gray-500/75 px-2">{Math.round(day.temp.min) + "°C"}</p>
+                        <p className="text-gray-500/75 px-2">{Math.round(day.temp.max) + "°C"}</p>
+                    </div>
                 </div>
             ))}
         </Card>
