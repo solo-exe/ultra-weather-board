@@ -3,7 +3,7 @@ import { createApiResponseSchema } from "./schemas/apiGatewayResSchema"
 import { geocodeSchema, type GeoCodeData } from "./schemas/geocodeSchema"
 import { weatherSchema } from "./schemas/weatherSchema"
 
-const baseUrl = "http://localhost:7002/api/v1/openweather"
+const baseUrl = "https://weather-board-api-service.onrender.com/api/v1/openweather"
 
 export const getWeather = async (data: { lat: number; lon: number; apiKey?: string }) => {
     const { lat, lon, apiKey } = data
